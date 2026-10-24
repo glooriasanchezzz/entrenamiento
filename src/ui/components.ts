@@ -134,7 +134,7 @@ export function toast(message: string, tone: Tone = 'neutral', ms = 3500): void 
 export function exerciseThumb(exerciseId: string, name: string, opts: { zoom?: boolean; size?: 'sm' | 'md' } = {}): HTMLElement | null {
   const imgs = exerciseImages(exerciseId);
   if (!imgs) return null;
-  const img = h('img', { src: imgs[0], alt: opts.zoom ? '' : `Foto de ${name}`, loading: 'lazy', decoding: 'async', class: 'thumb__img' });
+  const img = h('img', { src: imgs[0], alt: '', loading: 'lazy', decoding: 'async', class: 'thumb__img' });
   img.addEventListener('error', () => img.closest('.thumb')?.remove());
   if (!opts.zoom) return h('span', { class: `thumb thumb--${opts.size ?? 'sm'}` }, img);
   return h(
@@ -157,4 +157,32 @@ export function exerciseThumb(exerciseId: string, name: string, opts: { zoom?: b
     },
     img,
   );
+}
+
+function openPhotos(exerciseId: string, name: string): void {
+  const imgs = exerciseImages(exerciseId);
+  if (!imgs) return;
+  openDialog(
+    name,
+    h(
+      'div',
+      { class: 'stack' },
+      h('img', { src: imgs[0], alt: `${name}: posición inicial`, class: 'zoom__img' }),
+      h('img', { src: imgs[1], alt: `${name}: posición final`, class: 'zoom__img' }),
+      h('p', { class: 'muted small' }, 'Posición inicial y final del movimiento.'),
+    ),
+  );
+}
+
+/** Las dos fotos del ejercicio, grandes y una al lado de otra. Al tocarlas se amplían. */
+export function exercisePhotos(exerciseId: string, name: string): HTMLElement | null {
+  const imgs = exerciseImages(exerciseId);
+  if (!imgs) return null;
+  const strip = h(
+    'button',
+    { type: 'button', class: 'photos', 'aria-label': `Ampliar las fotos de ${name}`, onClick: () => openPhotos(exerciseId, name) },
+    imgs.map((src, i) => h('img', { src, alt: '', loading: 'lazy', decoding: 'async', class: 'photos__img', 'data-pos': i === 0 ? 'inicio' : 'final' })),
+  );
+  for (const img of strip.querySelectorAll('img')) img.addEventListener('error', () => strip.remove());
+  return strip;
 }

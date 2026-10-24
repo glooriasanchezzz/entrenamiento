@@ -170,3 +170,9 @@ button.thumb { cursor: pointer; }
 .zoom__img { width: 100%; height: auto; border-radius: 12px; display: block; }
 .exercise__head { justify-content: flex-start; } .exercise__head h2 { flex: 1; } .exercise__head > .btn { margin-left: auto; }
 .picker__item { display: flex; align-items: center; gap: 10px; } .row-btn__name { display: flex; align-items: center; gap: 10px; }
+
+/* Fotos más grandes */
+.thumb--sm { width: 72px; height: 72px; } .thumb--md { width: 96px; height: 96px; }
+.picker__item { min-height: 84px; } .row-btn { min-height: 84px; }
+.photos { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; margin: 8px 0 4px; }
+.photos__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); display: block; background: var(--paper); }

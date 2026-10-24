@@ -4,7 +4,7 @@ import { h, icon } from '../../dom';
 import { newId, readMeta, shouldRemindBackup, snoozeBackup } from '../../storage';
 import type { SetEntry, Workout, WorkoutExercise } from '../../types';
 import { exportBackup } from '../backup';
-import { button, callout, confirmDialog, exerciseThumb, toast } from '../components';
+import { button, callout, confirmDialog, exercisePhotos, toast } from '../components';
 import type { Ctx } from '../context';
 import { openExercisePicker } from '../picker';
 
@@ -229,7 +229,6 @@ function exerciseCard(ctx: Ctx, w: Workout, we: WorkoutExercise, idx: number): H
     h(
       'div',
       { class: 'exercise__head' },
-      exerciseThumb(we.exerciseId, we.name, { zoom: true }),
       h('h2', null, we.name, record ? h('span', { class: 'pr' }, icon('trophy', 14), ' Récord') : null),
       button(null, {
         variant: 'ghost',
@@ -239,6 +238,7 @@ function exerciseCard(ctx: Ctx, w: Workout, we: WorkoutExercise, idx: number): H
         onClick: () => ctx.store.update(() => w.exercises.splice(idx, 1)),
       }),
     ),
+    exercisePhotos(we.exerciseId, we.name),
     lastText ? h('p', { class: 'muted small' }, lastText) : null,
     h('div', { class: 'sets' }, ...rows),
     h(
