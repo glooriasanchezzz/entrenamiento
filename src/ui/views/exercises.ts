@@ -2,7 +2,7 @@ import { exerciseHistory } from '../../calc';
 import { h } from '../../dom';
 import { newId } from '../../storage';
 import { MUSCLE_GROUPS, type Exercise, type MuscleGroup, type Routine } from '../../types';
-import { button, confirmDialog, exerciseThumb, openDialog, toast } from '../components';
+import { button, confirmDialog, exercisePhotos, exerciseThumb, openDialog, toast, videoLink } from '../components';
 import type { Ctx } from '../context';
 import { GROUP_LABEL, createExercise, openExercisePicker } from '../picker';
 
@@ -53,7 +53,7 @@ function editExercise(ctx: Ctx, ex: Exercise | null): void {
   const name = h('input', { type: 'text', maxlength: 60, value: ex?.name ?? '', 'aria-label': 'Nombre', autocomplete: 'off' });
   const group = h('select', { 'aria-label': 'Grupo muscular' }, MUSCLE_GROUPS.map((g) => h('option', { value: g, selected: g === (ex?.group ?? 'otro') }, GROUP_LABEL[g])));
   group.value = ex?.group ?? 'otro';
-  const body = h('div', { class: 'stack' }, h('label', { class: 'field' }, h('span', null, 'Nombre'), name), h('label', { class: 'field' }, h('span', null, 'Grupo muscular'), group));
+  const body = h('div', { class: 'stack' }, ex ? exercisePhotos(ex.id, ex.name) : null, ex ? h('div', { class: 'row' }, videoLink(ex.name, false)) : null, h('label', { class: 'field' }, h('span', null, 'Nombre'), name), h('label', { class: 'field' }, h('span', null, 'Grupo muscular'), group));
   const dlg = openDialog(ex ? 'Editar ejercicio' : 'Nuevo ejercicio', body);
   body.append(
     h(

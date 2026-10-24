@@ -183,6 +183,6 @@ button.thumb { cursor: pointer; }
 .anim__b { position: absolute; inset: 0; height: 100%; object-fit: cover; animation: swap 1.8s ease-in-out infinite alternate; }
 @keyframes swap { 0%, 30% { opacity: 0; } 70%, 100% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .anim__b { animation: none; opacity: 0; } }
-.row { display: flex; gap: 6px; } .zoom__half { width: calc(50% - 3px); border-radius: 10px; display: block; }
+.row { display: flex; gap: 6px; } .row > .btn { flex: 1; } .zoom__half { width: calc(50% - 3px); border-radius: 10px; display: block; }
 .exercise__foot { flex-wrap: wrap; } .exercise__foot .btn { text-decoration: none; }
 a.btn { text-decoration: none; }
