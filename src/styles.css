@@ -161,3 +161,12 @@ path.chart__line { fill: none; } .chart__dot { stroke: var(--surface); stroke-wi
 .dlg__head { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px 6px; gap: 8px; } .dlg__head h2 { margin: 0; font-size: 1.1rem; }
 .dlg__body { padding: 8px 16px 16px; display: grid; gap: 12px; overflow: auto; max-height: calc(88vh - 60px); }
 .dlg__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; } .dlg__actions--wrap { justify-content: space-between; flex-wrap: wrap; }
+
+/* Fotos de ejercicios */
+.thumb { flex: none; display: inline-block; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--paper); line-height: 0; }
+button.thumb { cursor: pointer; }
+.thumb--sm { width: 44px; height: 44px; } .thumb--md { width: 64px; height: 64px; }
+.thumb__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.zoom__img { width: 100%; height: auto; border-radius: 12px; display: block; }
+.exercise__head { justify-content: flex-start; } .exercise__head h2 { flex: 1; } .exercise__head > .btn { margin-left: auto; }
+.picker__item { display: flex; align-items: center; gap: 10px; } .row-btn__name { display: flex; align-items: center; gap: 10px; }

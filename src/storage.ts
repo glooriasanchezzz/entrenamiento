@@ -1,6 +1,6 @@
 /** Guardado local, copias de seguridad y recordatorio de copia. */
 import { addDays, diffDays, isValidISO, todayISO } from './dates';
-import { emptyData } from './seed';
+import { SEED_V2_EXERCISES, SEED_VERSION, emptyData } from './seed';
 import { MUSCLE_GROUPS } from './types';
 import type { AppData, Exercise, MuscleGroup, Routine, SetEntry, Workout, WorkoutExercise } from './types';
 
@@ -114,7 +114,15 @@ export function sanitizeData(raw: unknown): SanitizeResult | null {
     weeklyGoal: Math.round(num(st.weeklyGoal, 1, 14, base.settings.weeklyGoal)),
   };
 
-  return { data: { version: 1, exercises: Array.isArray(raw.exercises) ? exercises : base.exercises, workouts, routines, settings }, dropped };
+  // Si la lista de partida se ha ampliado desde que se guardaron los datos, se añaden los ejercicios nuevos
+  // (sin tocar los que ya tienes ni recuperar los que borraste de versiones anteriores).
+  let finalExercises = exercises;
+  if (!Array.isArray(raw.exercises)) finalExercises = base.exercises;
+  else if ((Number(raw.seedVersion) || 1) < SEED_VERSION) {
+    const have = new Set(exercises.map((e) => e.id));
+    finalExercises = [...exercises, ...SEED_V2_EXERCISES.filter((e) => !have.has(e.id)).map((e) => ({ ...e }))];
+  }
+  return { data: { version: 1, seedVersion: SEED_VERSION, exercises: finalExercises, workouts, routines, settings }, dropped };
 }
 
 export function loadData(storage: Store | null = browserStorage()): AppData {

@@ -35,6 +35,7 @@ describe('guardado', () => {
 describe('saneado', () => {
   it('descarta lo roto y corrige valores absurdos', () => {
     const res = sanitizeData({
+      seedVersion: 2,
       exercises: [{ id: 'a', name: 'Banca', group: 'nada' }, { name: '' }],
       workouts: [
         { id: '1', date: '2026-13-40', exercises: [] },
@@ -88,5 +89,28 @@ describe('recordatorio de copia', () => {
     expect(readMeta(s)).toEqual({ last: '2026-10-29', snoozeUntil: null });
     s.setItem(META_KEY, 'basura');
     expect(readMeta(s)).toEqual({ last: null, snoozeUntil: null });
+  });
+});
+
+describe('ampliación de la lista de ejercicios', () => {
+  it('quien ya tenía datos recibe los ejercicios nuevos sin perder los suyos', () => {
+    const vieja = {
+      exercises: [{ id: 'press-banca', name: 'Press banca', group: 'pecho' }, { id: 'mio', name: 'Mi ejercicio', group: 'otro' }],
+      workouts: [],
+    };
+    const res = sanitizeData(vieja)!;
+    const ids = res.data.exercises.map((e) => e.id);
+    expect(ids).toContain('mio');
+    expect(ids).toContain('flexiones');
+    expect(ids.filter((i) => i === 'press-banca')).toHaveLength(1);
+    expect(res.data.seedVersion).toBe(2);
+    expect(ids).not.toContain('sentadilla'); // uno de los 26 originales que borró: no vuelve
+  });
+  it('si ya está al día no vuelve a añadir los que borraste', () => {
+    const al_dia = { seedVersion: 2, exercises: [{ id: 'mio', name: 'Mi ejercicio', group: 'otro' }], workouts: [] };
+    expect(sanitizeData(al_dia)!.data.exercises).toHaveLength(1);
+  });
+  it('los datos nuevos traen todos los ejercicios', () => {
+    expect(emptyData().exercises.length).toBe(157);
   });
 });

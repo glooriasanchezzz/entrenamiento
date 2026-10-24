@@ -2,7 +2,7 @@ import { exerciseHistory } from '../../calc';
 import { h } from '../../dom';
 import { newId } from '../../storage';
 import { MUSCLE_GROUPS, type Exercise, type MuscleGroup, type Routine } from '../../types';
-import { button, confirmDialog, openDialog, toast } from '../components';
+import { button, confirmDialog, exerciseThumb, openDialog, toast } from '../components';
 import type { Ctx } from '../context';
 import { GROUP_LABEL, createExercise, openExercisePicker } from '../picker';
 
@@ -41,7 +41,7 @@ export function renderExercises(ctx: Ctx): HTMLElement {
       h(
         'ul',
         { class: 'rows' },
-        items.map((e) => h('li', null, h('button', { type: 'button', class: 'row-btn', onClick: () => editExercise(ctx, e) }, h('span', null, e.name), used(e.id) ? h('span', { class: 'muted small' }, `${used(e.id)} ${used(e.id) === 1 ? 'sesión' : 'sesiones'}`) : null))),
+        items.map((e) => h('li', null, h('button', { type: 'button', class: 'row-btn', onClick: () => editExercise(ctx, e) }, h('span', { class: 'row-btn__name' }, exerciseThumb(e.id, e.name, { size: 'sm' }), e.name), used(e.id) ? h('span', { class: 'muted small' }, `${used(e.id)} ${used(e.id) === 1 ? 'sesión' : 'sesiones'}`) : null))),
       ),
     );
   }

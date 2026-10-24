@@ -1,7 +1,7 @@
 import { h } from '../dom';
 import { newId } from '../storage';
 import { MUSCLE_GROUPS, type Exercise, type MuscleGroup } from '../types';
-import { button, openDialog, toast } from './components';
+import { button, exerciseThumb, openDialog, toast } from './components';
 import type { Ctx } from './context';
 
 export const GROUP_LABEL: Record<MuscleGroup, string> = {
@@ -66,7 +66,8 @@ export function openExercisePicker(ctx: Ctx, o: { title: string; multi?: boolean
                 draw();
               },
             },
-            e.name,
+            exerciseThumb(e.id, e.name, { size: 'sm' }),
+            h('span', null, e.name),
           ),
         ),
       );

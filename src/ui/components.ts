@@ -1,4 +1,5 @@
 import { h, icon, type Attrs, type Child, type IconName } from '../dom';
+import { exerciseImages } from '../exerciseImages';
 
 export type Tone = 'good' | 'warn' | 'bad' | 'info' | 'neutral';
 
@@ -127,4 +128,33 @@ export function toast(message: string, tone: Tone = 'neutral', ms = 3500): void 
   const el = h('div', { class: `toast toast--${tone}`, role: 'status' }, message);
   toastHost.append(el);
   setTimeout(() => el.remove(), ms);
+}
+
+/** Miniatura de un ejercicio (vacía si no tiene foto). Con `zoom`, al tocarla se ven las dos fotos grandes. */
+export function exerciseThumb(exerciseId: string, name: string, opts: { zoom?: boolean; size?: 'sm' | 'md' } = {}): HTMLElement | null {
+  const imgs = exerciseImages(exerciseId);
+  if (!imgs) return null;
+  const img = h('img', { src: imgs[0], alt: opts.zoom ? '' : `Foto de ${name}`, loading: 'lazy', decoding: 'async', class: 'thumb__img' });
+  img.addEventListener('error', () => img.closest('.thumb')?.remove());
+  if (!opts.zoom) return h('span', { class: `thumb thumb--${opts.size ?? 'sm'}` }, img);
+  return h(
+    'button',
+    {
+      type: 'button',
+      class: `thumb thumb--${opts.size ?? 'md'}`,
+      'aria-label': `Ver fotos de ${name}`,
+      onClick: () =>
+        openDialog(
+          name,
+          h(
+            'div',
+            { class: 'stack' },
+            h('img', { src: imgs[0], alt: `${name}: posición inicial`, class: 'zoom__img' }),
+            h('img', { src: imgs[1], alt: `${name}: posición final`, class: 'zoom__img' }),
+            h('p', { class: 'muted small' }, 'Posición inicial y final del movimiento.'),
+          ),
+        ),
+    },
+    img,
+  );
 }

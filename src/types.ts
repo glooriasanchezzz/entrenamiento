@@ -51,6 +51,8 @@ export interface Settings {
 
 export interface AppData {
   version: 1;
+  /** Versión de la lista de ejercicios de partida que ya se ha incorporado (ausente = 1). */
+  seedVersion?: number;
   exercises: Exercise[];
   workouts: Workout[];
   routines: Routine[];
