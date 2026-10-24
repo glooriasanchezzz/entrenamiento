@@ -176,3 +176,13 @@ button.thumb { cursor: pointer; }
 .picker__item { min-height: 84px; } .row-btn { min-height: 84px; }
 .photos { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; margin: 8px 0 4px; }
 .photos__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); display: block; background: var(--paper); }
+
+/* Animación y vídeo */
+.anim { position: relative; border-radius: 12px; overflow: hidden; }
+.anim .zoom__img { width: 100%; }
+.anim__b { position: absolute; inset: 0; height: 100%; object-fit: cover; animation: swap 1.8s ease-in-out infinite alternate; }
+@keyframes swap { 0%, 30% { opacity: 0; } 70%, 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .anim__b { animation: none; opacity: 0; } }
+.row { display: flex; gap: 6px; } .zoom__half { width: calc(50% - 3px); border-radius: 10px; display: block; }
+.exercise__foot { flex-wrap: wrap; } .exercise__foot .btn { text-decoration: none; }
+a.btn { text-decoration: none; }

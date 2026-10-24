@@ -143,20 +143,20 @@ export function exerciseThumb(exerciseId: string, name: string, opts: { zoom?: b
       type: 'button',
       class: `thumb thumb--${opts.size ?? 'md'}`,
       'aria-label': `Ver fotos de ${name}`,
-      onClick: () =>
-        openDialog(
-          name,
-          h(
-            'div',
-            { class: 'stack' },
-            h('img', { src: imgs[0], alt: `${name}: posición inicial`, class: 'zoom__img' }),
-            h('img', { src: imgs[1], alt: `${name}: posición final`, class: 'zoom__img' }),
-            h('p', { class: 'muted small' }, 'Posición inicial y final del movimiento.'),
-          ),
-        ),
+      onClick: () => openPhotos(exerciseId, name),
     },
     img,
   );
+}
+
+/** Dirección de una búsqueda en YouTube de cómo se hace el ejercicio. */
+export function videoUrl(name: string): string {
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(`cómo hacer ${name} técnica correcta`)}`;
+}
+
+/** Botón-enlace que abre vídeos de cómo se hace el ejercicio (en YouTube, en otra pestaña). */
+export function videoLink(name: string, small = true): HTMLElement {
+  return h('a', { class: `btn btn--secondary${small ? ' btn--small' : ''}`, href: videoUrl(name), target: '_blank', rel: 'noopener noreferrer' }, icon('play', 18), h('span', null, 'Ver vídeo'));
 }
 
 function openPhotos(exerciseId: string, name: string): void {
@@ -167,9 +167,10 @@ function openPhotos(exerciseId: string, name: string): void {
     h(
       'div',
       { class: 'stack' },
-      h('img', { src: imgs[0], alt: `${name}: posición inicial`, class: 'zoom__img' }),
-      h('img', { src: imgs[1], alt: `${name}: posición final`, class: 'zoom__img' }),
-      h('p', { class: 'muted small' }, 'Posición inicial y final del movimiento.'),
+      h('div', { class: 'anim', role: 'img', 'aria-label': `${name}: el movimiento, de la posición inicial a la final` }, h('img', { src: imgs[0], alt: '', class: 'zoom__img' }), h('img', { src: imgs[1], alt: '', class: 'zoom__img anim__b' })),
+      h('p', { class: 'muted small' }, 'El movimiento va de la posición inicial a la final y vuelve.'),
+      h('div', { class: 'row' }, h('img', { src: imgs[0], alt: `${name}: posición inicial`, class: 'zoom__half' }), h('img', { src: imgs[1], alt: `${name}: posición final`, class: 'zoom__half' })),
+      videoLink(name, false),
     ),
   );
 }

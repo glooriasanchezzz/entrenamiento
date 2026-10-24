@@ -4,7 +4,7 @@ import { h, icon } from '../../dom';
 import { newId, readMeta, shouldRemindBackup, snoozeBackup } from '../../storage';
 import type { SetEntry, Workout, WorkoutExercise } from '../../types';
 import { exportBackup } from '../backup';
-import { button, callout, confirmDialog, exercisePhotos, toast } from '../components';
+import { button, callout, confirmDialog, exercisePhotos, toast, videoLink } from '../components';
 import type { Ctx } from '../context';
 import { openExercisePicker } from '../picker';
 
@@ -253,6 +253,7 @@ function exerciseCard(ctx: Ctx, w: Workout, we: WorkoutExercise, idx: number): H
         },
       }),
       we.sets.length > 1 ? button('Quitar serie', { small: true, variant: 'ghost', onClick: () => ctx.store.update(() => we.sets.pop()) }) : null,
+      videoLink(we.name),
     ),
   );
 }
